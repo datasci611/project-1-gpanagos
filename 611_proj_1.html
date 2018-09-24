@@ -131,7 +131,7 @@ $(document).ready(function () {
 
 <div id="data-set-1-how-religion-may-impact-fertility-a-historical-perspective." class="section level2">
 <h2>Data Set 1: How religion may impact fertility, a historical perspective.</h2>
-<p>The first data set is Swiss socioeconomic data from Princeton University’s Office of Population Research. It was compiled by Francine Van de Walle in 1976. The data was gathered from the different French speaking districts in Switzerland, all from 1888.</p>
+<p>The first data set,<code>swiss</code> is Swiss socioeconomic data from Princeton University’s Office of Population Research. It was compiled by Francine Van de Walle in 1976. The data was gathered from the different French speaking districts in Switzerland, all from 1888.</p>
 <pre class="r"><code>data(swiss)
 swiss_group&lt;-mutate(swiss,Percentage_Catholic=as.factor(ifelse(Catholic&lt;=25,&quot;\u2264 25%&quot;,ifelse(Catholic&gt;25 &amp; Catholic&lt;=75,&quot;&gt; 25% and \u2264 50%&quot;,&quot;&gt; 50%&quot;))))
 ggplot(data=swiss_group,aes(Fertility,Catholic,color=Percentage_Catholic))+geom_point()+ggtitle(&quot;Fertility Rate vs. Catholic Percentage&quot;)+ylab(&quot;Catholic Percentage&quot;)+xlab(&quot;Fertility Rate&quot;)+ labs(color='Catholic Percentage')</code></pre>
@@ -145,7 +145,7 @@ ggplot(data=swiss_group,aes(Fertility,Catholic,color=Percentage_Catholic))+geom_
 </div>
 <div id="data-set-two-taking-a-closer-look-at-bias-deception-of-numbers." class="section level2">
 <h2>Data Set Two: Taking a closer look at bias, deception of numbers.</h2>
-<p>The second data set is the aggregation of graduate admissions data to UC Berkeley’s six largest department for the year 1973. The data was originally compiled by P. J. Bickel, E. A. Hammel and J. W. O’Connell in their 1975 paper.</p>
+<p>The second data set, <code>UCBAdmissions</code> is the aggregation of graduate admissions data to UC Berkeley’s six largest department for the year 1973. The data was originally compiled by P. J. Bickel, E. A. Hammel and J. W. O’Connell in their 1975 paper.</p>
 <pre class="r"><code>data(UCBAdmissions)
 UCBAdmissions&lt;-data.frame(UCBAdmissions)
 
@@ -196,7 +196,7 @@ kable(UCBAdmissions_acceptance_normdep)</code></pre>
 </div>
 <div id="data-set-three-rich-women-and-rich-children-reality-aboard-the-titanic." class="section level2">
 <h2>Data Set Three: Rich women and rich children, reality aboard the Titanic.</h2>
-<p>The third data set consists of passenger information who were aboard the titanic before it sunk. The variables are Class, Sex, Age, and Survived (True or False) for each passenger. The original data was collected by the British Board of Trade and cited in a re-print from 1990, Report on the Loss of the ‘Titanic’ (S.S.).</p>
+<p>The third data, <code>Titanic</code> set consists of passenger information who were aboard the titanic before it sunk. The variables are Class, Sex, Age, and Survived (True or False) for each passenger. The original data was collected by the British Board of Trade and cited in a re-print from 1990, Report on the Loss of the ‘Titanic’ (S.S.).</p>
 <pre class="r"><code>data(Titanic)
 Titanic&lt;-data.frame(Titanic)
 Titanic_rate&lt;-Titanic %&gt;%
