@@ -7,18 +7,27 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r message=FALSE, warning=FALSE}
+#load libraries used
 library(tidyverse)
 library(knitr)
 library(matrixStats)
 ```
+
 
 ## Data Set 1: How religion may impact fertility, a historical perspective.
 
 The first data set,`swiss` is Swiss socioeconomic data from Princeton University's Office of Population Research. It was compiled by Francine Van de Walle in 1976. The data was gathered from the different French speaking districts in Switzerland, all from 1888. 
 
 ```{r warning=FALSE}
+#load data
 data(swiss)
+#add column which segments by percent of catholicism
 swiss_group<-mutate(swiss,Percentage_Catholic=as.factor(ifelse(Catholic<=25,"\u2264 25%",ifelse(Catholic>25 & Catholic<=75,"> 25% and \u2264 50%","> 50%"))))
+#create scatter plot which is colored by the previously created segment
 ggplot(data=swiss_group,aes(Fertility,Catholic,color=Percentage_Catholic))+geom_point()+ggtitle("Fertility Rate vs. Catholic Percentage")+ylab("Catholic Percentage")+xlab("Fertility Rate")+ labs(color='Catholic Percentage')
 ```
 
@@ -27,6 +36,7 @@ What we see above is a scatter plot with the Fertility rate on the x-axis and th
 We see what appears to be at least two separate clusters in our scatter plot. One which has very high fertility and very high Catholicism (in blue); the other has medium fertility and low Catholicism (in red). There is also a possible third group (in green), but there are too few data points (only `r length(filter(swiss_group,Percentage_Catholic=="> 25% and \u2264 50%")$Percentage_Catholic)`) to be certain. This shows an interesting phenomena taking place in 1888 Switzerland and probably across much of Europe. We see that there is a significant gap in Catholicism, but what is the difference in distributions of Fertility?
 
 ```{r warning=FALSE}
+#create density plot grouped by the previously made percent catholic bins
 ggplot(data=swiss_group,aes(Fertility,fill=Percentage_Catholic))+geom_density(alpha=.4)+ggtitle("Fertility Rate Density")+ylab("Density")+xlab("Fertility Rate")+scale_fill_discrete(name="Percentage Catholic")
 ```
 
@@ -40,32 +50,37 @@ The second data set, `UCBAdmissions` is the aggregation of graduate admissions d
 
 
 ```{r warning=FALSE}
+#load data
 data(UCBAdmissions)
+#change to a data frame
 UCBAdmissions<-data.frame(UCBAdmissions)
-
+#find the percent accepted by gender
 raw_acceptance<-group_by(UCBAdmissions,Gender) %>%
   summarize(percent_accepted=sum(ifelse(Admit=="Admitted",Freq,0))/sum(Freq))
-
+#create bar plot showing percent accepted between men and women
 ggplot(data=raw_acceptance,aes(Gender,percent_accepted))+geom_bar( position = "dodge", stat="identity")+ylab("Acceptance Rate")+ggtitle("Percent Accepted: Male vs. Female")
 ```
 
 The chart above shows the acceptance rate between men and women. We see that on average women are accepted `r round(filter(raw_acceptance,Gender=="Female")$percent_accepted*100,2)`% of the time and men are accepted `r round(filter(raw_acceptance,Gender=="Male")$percent_accepted*100,2)`% of the time. Given this graph, it definitely looks likely that those who admitting the students are preferring men much more than women; or are they? What if we instead looked at the admissions rate for each department separately?
 
 ```{r warning=FALSE}
+#percent accepted by gender and department
 UCBAdmissions_dept_acceptance<-UCBAdmissions %>%
   group_by(Gender,Dept) %>%
   summarize(percent_accepted=sum(ifelse(Admit=="Admitted",Freq,0))/sum(Freq))
 
+#create bar plot showing percent accepted grouped by gender and department
 ggplot(data=UCBAdmissions_dept_acceptance,aes(Gender,percent_accepted))+geom_bar(aes(fill=Dept), position = "dodge", stat="identity")+ylab("Acceptance Rate")+ggtitle("Acceptance Rate by Each Department: Male vs. Female")
 ```
 
 Above we see a graph looking at the acceptance rate for each department separately still grouped by Male and Female. But what is this? We do not see much evidence from this graph that men are being accepted more than women. Only 2 out of 6 departments have the average acceptance rate higher for men than for women. Why is this the case? Could it have to do with the number of raw applicants?
 
 ```{r warning=FALSE}
+#sum total number of applicants by each department
 UCBAdmissions %>%
   group_by(Gender, Dept) %>%
   summarize(Applicants=sum(Freq)) %>%
-
+#graph total number of applicants by each department
 ggplot(aes(Gender,Applicants))+geom_bar(aes(fill=Dept), position = "dodge", stat="identity")+ylab("Applicants")+ggtitle("Total Applicants by Each Department: Male vs. Female")
 ```
 
@@ -73,10 +88,12 @@ Above shows the total applicants for each department grouped by gender. Clearly 
 
 
 ```{r warning=FALSE}
+#find average acceptance rate between the departments and genders
 UCBAdmissions_acceptance_normdep<-UCBAdmissions_dept_acceptance %>%
   group_by(Gender) %>%
   summarize(percent_accepted=mean(percent_accepted)) %>%
   rename("Acceptance Rate"=percent_accepted)
+#print out table
 kable(UCBAdmissions_acceptance_normdep)
 ```
 
@@ -87,26 +104,34 @@ This confirms what we suspected; when taking each department into account we see
 The third data, `Titanic` set consists of passenger information who were aboard the titanic before it sunk. The variables are Class, Sex, Age, and Survived (True or False) for each passenger. The original data was collected by the British Board of Trade and cited in a re-print from 1990, Report on the Loss of the 'Titanic' (S.S.).
 
 ```{r warning=FALSE}
+#load Titanic data
 data(Titanic)
+#convert to data frame
 Titanic<-data.frame(Titanic)
+#find percentage survived per class/sex/age
 Titanic_rate<-Titanic %>%
   group_by(Class,Sex,Age) %>%
   summarize(percent_survived=sum(ifelse(Survived=="Yes",Freq,0))/sum(Freq))
+#graph bar plot of survival rate for each sex and age colored by class.
 ggplot(Titanic_rate,aes(Age,percent_survived,fill=Class))+geom_bar(position="dodge",stat="identity")+ylab("Survival Rate")+facet_grid(~Sex)+ggtitle("Titanic Survival Rates")
 ```
 
 Above is a graph of the survival rate of each person based on their attributes. We immediately see that there was much survival among females than males except for male children who where either 3rd. Interestingly, the only case for an adult male to have a greater survival rate than a child is a 1st Class adult male compared with a 3rd Class male child. Similarly 3rd class females (both adult and child) had significantly lower survival rates than females of the 1st and 2nd class. Our data provides evidence that most children (especially daughters) stayed with their mothers for the entirety of the crisis, boarding boats most often together.
 
 ```{r warning=FALSE}
+#find survial rate between all males and females
 Titanic_rate_sex<-Titanic %>%
   group_by(Sex) %>%
   summarize(percent_survived=sum(ifelse(Survived=="Yes",Freq,0))/sum(Freq)) %>%
   rename("Survival Rate"=percent_survived)
+#print table
 kable(Titanic_rate_sex)
+#find survival rate between classes
 Titanic_rate_class<-Titanic %>%
   group_by(Class) %>%
   summarize(percent_survived=sum(ifelse(Survived=="Yes",Freq,0))/sum(Freq)) %>%
   rename("Survival Rate"=percent_survived)
+#print table
 kable(Titanic_rate_class)
 ```
 
@@ -117,10 +142,21 @@ The two tables above further shows the difference of survival between the sexes 
 The fourth data set, `ToothGrowth` consists of 60 guinea pigs given doses of vitamin C via orange juice or ascorbic acid (a basic form of vitamin C) to see how the doses impact the length of their odontoblasts which are the cells responsible for tooth growth. The source of the data came from the work of E.W. Crampton in his 1947 paper, The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig.
 
 ```{r warning=FALSE}
+#load ToothGrowth data
 data(ToothGrowth)
+#graph scatter plot and smoothed lines finding between the two supplements
 ggplot(data=ToothGrowth,aes((dose),len,colour=supp))+geom_smooth()+geom_point()+xlab("Dose: milligrams per day")+ylab("Odontoblast (tooth growth cell) Length")+labs(color="Supplement")+scale_color_manual(labels=c("Orange Juice","Ascorbic Acid"),values=c("red","blue"))+ggtitle("Guinea Pig Odontoblast Lengths for given Dosage")
 ```
 
-Above we have each data point plotted where dose is on the x-axis and the length of the odontoblasts (tooth growth cells) is on the y-axis. A smoothing function has been applied, the smoothing method used was loess, with a 95% confidence interval representing the shaded region around each smoothed line. We see that overall the orange juice tends to out perform ascorbic acid for every dose except for when the the dose is 2 mil/day. It is difficult to conclude if the two supplements would have the same affect on the odontoblast length for doses greater than 2. A further study could look into this and give pigs a higher dosage.
+Above we have each data point plotted where dose is on the x-axis and the length of the odontoblasts (tooth growth cells) is on the y-axis. A smoothing function has been applied, the smoothing method used was loess, with a 95% confidence interval representing the shaded region around each smoothed line. We see that overall the orange juice tends to out perform ascorbic acid for every dose except for when the the dose is 2 mil/day.
 
-Given that orange juice has a higher odontoblast length for doses 0.5 and 1.0, this indicates there may be something in orange juice which is helping the odontoblast length besides the vitamin C. This also shows that consuming orange juice may be better for tooth growth than taking the equivalent amount of vitamin C through supplements. 
+```{r warning=FALSE}
+#find mean and stdev for both orange juice and ascorbic acid
+ToothGrowth_mean<-ToothGrowth %>%
+  group_by(Supplement=supp) %>%
+  summarise(Mean=mean(len),"Standard Deviation"=sd(len))
+#print table
+kable(ToothGrowth_mean)
+```
+
+Above is a table showing the mean and table deviation of the `len` (odontoblast length) grouped by `OJ` (Orange Juice) and `VC` (Ascorbic Acid). The mean for Orange Juice is greater than ascorbic acid.  Given that orange juice has a higher odontoblast length for doses 0.5 and 1.0, this indicates there may be something in orange juice which is helping the odontoblast length besides the vitamin C. This also shows that consuming orange juice may be better for tooth growth than taking the equivalent amount of vitamin C through supplements. It is difficult to conclude if the two supplements would have the same affect on the odontoblast length for doses greater than 2. A further study could look into this and give pigs a higher dosage.
