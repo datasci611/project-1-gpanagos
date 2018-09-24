@@ -261,9 +261,9 @@ kable(Titanic_rate_class)</code></pre>
 </table>
 <p>The two tables above further shows the difference of survival between the sexes and the classes. This, along with the bar chart, shows how different your chances of survival was if you were a female or child with wealth enough to be at least 2nd class.</p>
 </div>
-<div id="data-set-four-orange-juice-is-better-than-ascorbic-acid-for-teeth-growth." class="section level2">
-<h2>Data Set Four: Orange juice is better than ascorbic acid for teeth growth.</h2>
-<p>The fourth data set consists of 60 guinea pigs given doses of vitamin C via orange juice or ascorbic acid (a basic form of vitamin C) to see how the doses impact the length of their odontoblasts which are the cells responsible for tooth growth. The source of the data came from the work of E.W. Crampton in his 1947 paper, The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig.</p>
+<div id="data-set-four-orange-juice-may-be-than-ascorbic-acid-for-teeth-growth." class="section level2">
+<h2>Data Set Four: Orange juice may be than ascorbic acid for teeth growth.</h2>
+<p>The fourth data set, <code>ToothGrowth</code> consists of 60 guinea pigs given doses of vitamin C via orange juice or ascorbic acid (a basic form of vitamin C) to see how the doses impact the length of their odontoblasts which are the cells responsible for tooth growth. The source of the data came from the work of E.W. Crampton in his 1947 paper, The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig.</p>
 <pre class="r"><code>data(ToothGrowth)
 ggplot(data=ToothGrowth,aes((dose),len,colour=supp))+geom_smooth()+geom_point()+xlab(&quot;Dose: milligrams per day&quot;)+ylab(&quot;Odontoblast (tooth growth cell) Length&quot;)+labs(color=&quot;Supplement&quot;)+scale_color_manual(labels=c(&quot;Orange Juice&quot;,&quot;Ascorbic Acid&quot;),values=c(&quot;red&quot;,&quot;blue&quot;))+ggtitle(&quot;Guinea Pig Odontoblast Lengths for given Dosage&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using method = 'loess' and formula 'y ~ x'</code></pre>

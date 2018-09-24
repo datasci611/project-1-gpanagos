@@ -14,7 +14,7 @@ library(matrixStats)
 
 ## Data Set 1: How religion may impact fertility, a historical perspective.
 
-The first data set is Swiss socioeconomic data from Princeton University's Office of Population Research. It was compiled by Francine Van de Walle in 1976. The data was gathered from the different French speaking districts in Switzerland, all from 1888. 
+The first data set,`swiss` is Swiss socioeconomic data from Princeton University's Office of Population Research. It was compiled by Francine Van de Walle in 1976. The data was gathered from the different French speaking districts in Switzerland, all from 1888. 
 
 ```{r warning=FALSE}
 data(swiss)
@@ -36,7 +36,7 @@ This shows that there is evidence that Catholicism and fertility rates are corre
 
 ##Data Set Two: Taking a closer look at bias, deception of numbers. 
 
-The second data set is the aggregation of graduate admissions data to UC Berkeley's six largest department for the year 1973. The data was originally compiled by  P. J. Bickel, E. A. Hammel and J. W. O'Connell in their 1975 paper.
+The second data set, `UCBAdmissions` is the aggregation of graduate admissions data to UC Berkeley's six largest department for the year 1973. The data was originally compiled by  P. J. Bickel, E. A. Hammel and J. W. O'Connell in their 1975 paper.
 
 
 ```{r warning=FALSE}
@@ -84,7 +84,7 @@ This confirms what we suspected; when taking each department into account we see
 
 ##Data Set Three: Rich women and rich children, reality aboard the Titanic.
 
-The third data set consists of passenger information who were aboard the titanic before it sunk. The variables are Class, Sex, Age, and Survived (True or False) for each passenger. The original data was collected by the British Board of Trade and cited in a re-print from 1990, Report on the Loss of the 'Titanic' (S.S.).
+The third data, `Titanic` set consists of passenger information who were aboard the titanic before it sunk. The variables are Class, Sex, Age, and Survived (True or False) for each passenger. The original data was collected by the British Board of Trade and cited in a re-print from 1990, Report on the Loss of the 'Titanic' (S.S.).
 
 ```{r warning=FALSE}
 data(Titanic)
@@ -112,9 +112,9 @@ kable(Titanic_rate_class)
 
 The two tables above further shows the difference of survival between the sexes and the classes. This, along with the bar chart, shows how different your chances of survival was if you were a female or child with wealth enough to be at least 2nd class.
 
-##Data Set Four: Orange juice is better than ascorbic acid for teeth growth.
+##Data Set Four: Orange juice may be than ascorbic acid for teeth growth.
 
-The fourth data set consists of 60 guinea pigs given doses of vitamin C via orange juice or ascorbic acid (a basic form of vitamin C) to see how the doses impact the length of their odontoblasts which are the cells responsible for tooth growth. The source of the data came from the work of E.W. Crampton in his 1947 paper, The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig.
+The fourth data set, `ToothGrowth` consists of 60 guinea pigs given doses of vitamin C via orange juice or ascorbic acid (a basic form of vitamin C) to see how the doses impact the length of their odontoblasts which are the cells responsible for tooth growth. The source of the data came from the work of E.W. Crampton in his 1947 paper, The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig.
 
 ```{r warning=FALSE}
 data(ToothGrowth)
